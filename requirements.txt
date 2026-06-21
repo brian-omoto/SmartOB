@@ -1,0 +1,6 @@
+Django==5.1.4
+psycopg2-binary==2.9.10
+pgvector==0.2.5
+spacy==3.8.4
+sentence-transformers==3.4.1
+faker==28.4.1
