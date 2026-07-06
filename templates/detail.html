@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartOB - Record Details</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f4f6fc;
+            min-height: 100vh;
+            color: #1a1a2e;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0f1a3a 0%, #1a2a6c 50%, #2a3f8a 100%);
+            color: white;
+            padding: 16px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 30px rgba(15, 26, 58, 0.25);
+        }
+
+        .header .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header .logo span { color: #8ab4f8; }
+
+        .header .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 14px;
+        }
+
+        .header .user-info .avatar {
+            background: linear-gradient(135deg, #8ab4f8, #5a8de0);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .header .user-info .role-badge {
+            background: rgba(255,255,255,0.1);
+            padding: 3px 14px;
+            border-radius: 20px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .header .user-info a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .header .user-info a:hover { color: #ffffff; }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 28px 24px;
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            color: #8a8a9a;
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb a {
+            color: #1a2a6c;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .breadcrumb a:hover { text-decoration: underline; }
+
+        .detail-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 32px 36px;
+            box-shadow: 0 4px 24px rgba(15, 26, 58, 0.06);
+            border: 1px solid rgba(26, 42, 108, 0.04);
+        }
+
+        .detail-card .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0f1a3a;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #eef2ff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .detail-card .card-title .badge {
+            background: #eef2ff;
+            color: #1a2a6c;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 16px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-row {
+            display: flex;
+            padding: 14px 0;
+            border-bottom: 1px solid #f0f4ff;
+        }
+
+        .detail-row:last-child { border-bottom: none; }
+
+        .detail-row .label {
+            width: 200px;
+            font-weight: 600;
+            color: #1a2a6c;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .detail-row .value {
+            flex: 1;
+            color: #1a1a2e;
+            font-size: 14px;
+            word-break: break-word;
+        }
+
+        .detail-row .value .empty {
+            color: #b0b8c8;
+            font-style: italic;
+        }
+
+        .detail-row .value .summary-text {
+            white-space: pre-wrap;
+            line-height: 1.7;
+            background: #f8faff;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border-left: 4px solid #1a2a6c;
+        }
+
+        .back-actions {
+            margin-top: 24px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-back {
+            display: inline-block;
+            padding: 12px 28px;
+            background: linear-gradient(135deg, #1a2a6c 0%, #2a3f8a 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 42, 108, 0.25);
+        }
+
+        .btn-back-outline {
+            display: inline-block;
+            padding: 12px 28px;
+            background: transparent;
+            color: #1a2a6c;
+            border: 2px solid #1a2a6c;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-back-outline:hover {
+            background: #f4f6fc;
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px 24px;
+            color: #b0b8c8;
+            font-size: 13px;
+            border-top: 1px solid #eef2ff;
+            margin-top: 32px;
+            background: #ffffff;
+        }
+
+        .footer strong { color: #1a2a6c; }
+
+        @media (max-width: 768px) {
+            .header { padding: 14px 20px; }
+            .header .logo { font-size: 20px; }
+            .detail-card { padding: 20px; }
+            .detail-row { flex-direction: column; padding: 12px 0; }
+            .detail-row .label { width: 100%; margin-bottom: 4px; }
+            .back-actions { flex-wrap: wrap; }
+            .btn-back, .btn-back-outline { width: 100%; text-align: center; }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 16px 12px; }
+            .detail-card { padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">Smart<span>OB</span></div>
+        <div class="user-info">
+            <span class="avatar">{{ user.username|slice:":2"|upper }}</span>
+            <span>{{ user.get_full_name|default:user.username }}</span>
+            <span class="role-badge">{{ user.role|capfirst }}</span>
+            <a href="/logout/">Logout</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="/">← Search</a> <span style="color:#b0b8c8;">/ Record Details</span>
+        </div>
+
+        <div class="detail-card">
+            <div class="card-title">
+                📄 OB Record Details
+                <span class="badge">{{ record.1 }}</span>
+            </div>
+
+            <div class="detail-row">
+                <div class="label">OB Number</div>
+                <div class="value"><strong>{{ record.1 }}</strong></div>
+            </div>
+
+            <div class="detail-row">
+                <div class="label">Date Reported</div>
+                <div class="value">{{ record.2 }}</div>
+            </div>
+
+            <div class="detail-row">
+                <div class="label">Case Type</div>
+                <div class="value">{{ record.3|capfirst }}</div>
+            </div>
+
+            <div class="detail-row">
+                <div class="label">Location</div>
+                <div class="value">{{ record.4 }}</div>
+            </div>
+
+            <div class="detail-row">
+                <div class="label">Complainant</div>
+                <div class="value">{{ record.5|default:"<span class='empty'>Not recorded</span>" }}</div>
+            </div>
+
+            <div class="detail-row">
+                <div class="label">Suspect(s)</div>
+                <div class="value">{{ record.6|default:"<span class='empty'>None recorded</span>" }}</div>
+            </div>
+
+            <div class="detail-row">
+                <div class="label">Case Summary</div>
+                <div class="value"><div class="summary-text">{{ record.7 }}</div></div>
+            </div>
+
+            <div class="detail-row">
+                <div class="label">Investigating Officer</div>
+                <div class="value">{{ record.8|default:"<span class='empty'>Not assigned</span>" }}</div>
+            </div>
+
+            <div class="detail-row">
+                <div class="label">Created At</div>
+                <div class="value">{{ record.9 }}</div>
+            </div>
+
+            <div class="detail-row">
+                <div class="label">Last Updated</div>
+                <div class="value">{{ record.10 }}</div>
+            </div>
+
+            <div class="back-actions">
+                <a href="/" class="btn-back">← Back to Search</a>
+                <a href="#" class="btn-back-outline" onclick="window.print(); return false;">🖨️ Print</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        SmartOB v1.0 &bull; AI-Assisted Search for Police Occurrence Books &bull; <strong>Strathmore University</strong>
+    </div>
+</body>
+</html>

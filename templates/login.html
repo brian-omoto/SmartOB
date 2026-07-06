@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartOB - System Login</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f0f4ff 0%, #dce3f7 50%, #c5d0e8 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* ===== LOGIN CARD ===== */
+        .login-container {
+            background: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 24px 64px rgba(15, 26, 58, 0.15);
+            padding: 48px 44px;
+            width: 100%;
+            max-width: 420px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .login-container:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 32px 80px rgba(15, 26, 58, 0.18);
+        }
+
+        /* ===== HEADER ===== */
+        .login-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .login-header .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 38px;
+            font-weight: 700;
+            color: #0f1a3a;
+            letter-spacing: -0.5px;
+        }
+
+        .login-header .logo span {
+            color: #2a3f8a;
+        }
+
+        .login-header .subtitle {
+            font-size: 14px;
+            color: #8a8a9a;
+            margin-top: 4px;
+            font-weight: 400;
+        }
+
+        .login-header .badge {
+            display: inline-block;
+            background: #eef2ff;
+            color: #1a2a6c;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 16px;
+            border-radius: 20px;
+            margin-top: 10px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* ===== ROLE SELECTOR ===== */
+        .role-selector {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            background: #f4f6fc;
+            border-radius: 14px;
+            padding: 6px;
+            border: 1px solid #e8ecf4;
+        }
+
+        .role-btn {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: transparent;
+            color: #8a8a9a;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .role-btn:hover {
+            background: rgba(26, 42, 108, 0.04);
+        }
+
+        .role-btn.active {
+            background: #1a2a6c;
+            color: white;
+            box-shadow: 0 4px 16px rgba(26, 42, 108, 0.2);
+        }
+
+        .role-btn.active:hover {
+            background: #0f1a3a;
+        }
+
+        .role-btn .icon {
+            font-size: 16px;
+        }
+
+        .role-btn .badge-role {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 1px 8px;
+            border-radius: 10px;
+            margin-left: 2px;
+        }
+
+        .role-btn .badge-role.admin {
+            background: #ffebee;
+            color: #c62828;
+        }
+        .role-btn .badge-role.officer {
+            background: #e8f5e9;
+            color: #1b5e20;
+        }
+        .role-btn.active .badge-role {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        /* ===== FORM ===== */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1a2a6c;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 15px;
+            border: 2px solid #e8ecf4;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            background: #f8faff;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #1a2a6c;
+            box-shadow: 0 0 0 4px rgba(26, 42, 108, 0.08);
+            background: #ffffff;
+        }
+
+        .form-group input::placeholder {
+            color: #b0b8c8;
+            font-weight: 300;
+        }
+
+        /* ===== ERROR ===== */
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            text-align: center;
+            margin-bottom: 18px;
+            border-left: 4px solid #c62828;
+        }
+
+        /* ===== BUTTON ===== */
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #1a2a6c 0%, #2a3f8a 100%);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.3px;
+            margin-top: 4px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(26, 42, 108, 0.3);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        /* ===== FOOTER ===== */
+        .login-footer {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 12px;
+            color: #b0b8c8;
+            border-top: 1px solid #eef2ff;
+            padding-top: 20px;
+        }
+
+        .login-footer strong {
+            color: #1a2a6c;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 32px 20px;
+            }
+            .login-header .logo {
+                font-size: 32px;
+            }
+            .role-selector {
+                flex-direction: column;
+                gap: 6px;
+            }
+            .role-btn {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <!-- HEADER -->
+        <div class="login-header">
+            <div class="logo">Smart<span>OB</span></div>
+            <div class="subtitle">AI-Assisted Search for Police Occurrence Books</div>
+            <div class="badge">🔒 System Login</div>
+        </div>
+
+        <!-- ERROR MESSAGES -->
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <!-- ROLE SELECTOR -->
+        <div class="role-selector">
+            <button type="button" class="role-btn active" id="btn-officer" onclick="selectRole('officer')">
+                <span class="icon">👮</span> Officer
+                <span class="badge-role officer">Access</span>
+            </button>
+            <button type="button" class="role-btn" id="btn-admin" onclick="selectRole('admin')">
+                <span class="icon">🛡️</span> Admin
+                <span class="badge-role admin">Access</span>
+            </button>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <form method="POST" novalidate>
+            {% csrf_token %}
+            <input type="hidden" name="role" id="selected-role" value="officer" />
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required autofocus />
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required />
+            </div>
+
+            <button type="submit" class="btn-login" id="login-btn">🔓 Sign In as Officer</button>
+        </form>
+
+        <!-- FOOTER -->
+        <div class="login-footer">
+            SmartOB v1.0 &bull; <strong>Strathmore University</strong>
+        </div>
+    </div>
+
+    <script>
+        function selectRole(role) {
+            document.getElementById('selected-role').value = role;
+            const btnOfficer = document.getElementById('btn-officer');
+            const btnAdmin = document.getElementById('btn-admin');
+            const loginBtn = document.getElementById('login-btn');
+
+            btnOfficer.classList.remove('active');
+            btnAdmin.classList.remove('active');
+
+            if (role === 'officer') {
+                btnOfficer.classList.add('active');
+                loginBtn.textContent = '🔓 Sign In as Officer';
+            } else {
+                btnAdmin.classList.add('active');
+                loginBtn.textContent = '🔐 Sign In as Admin';
+            }
+        }
+        // Set default
+        selectRole('officer');
+    </script>
+</body>
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartOB - Create Record</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f4f6fc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #1a1a2e;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0f1a3a 0%, #1a2a6c 50%, #2a3f8a 100%);
+            color: white;
+            padding: 14px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 30px rgba(15, 26, 58, 0.25);
+        }
+
+        .header .logo { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; }
+        .header .logo span { color: #8ab4f8; }
+
+        .header .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 14px;
+        }
+
+        .header .user-info .avatar {
+            background: linear-gradient(135deg, #8ab4f8, #5a8de0);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .header .user-info .role-badge {
+            background: rgba(255,255,255,0.1);
+            padding: 3px 14px;
+            border-radius: 20px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 600;
+        }
+
+        .header .user-info a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .header .user-info a:hover { color: #ffffff; }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 24px;
+            flex: 1;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 32px 36px;
+            box-shadow: 0 4px 24px rgba(15, 26, 58, 0.06);
+            border: 1px solid rgba(26, 42, 108, 0.04);
+        }
+
+        .card h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0f1a3a;
+            margin-bottom: 4px;
+        }
+
+        .card .subtitle {
+            color: #8a8a9a;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1a2a6c;
+            margin-bottom: 4px;
+        }
+
+        .form-group label .required {
+            color: #c62828;
+            margin-left: 2px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 11px 16px;
+            font-size: 14px;
+            border: 2px solid #e8ecf4;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            background: #f8faff;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #1a2a6c;
+            box-shadow: 0 0 0 4px rgba(26, 42, 108, 0.08);
+            background: #ffffff;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #c62828;
+            font-size: 14px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn-primary {
+            padding: 12px 32px;
+            background: linear-gradient(135deg, #1a2a6c 0%, #2a3f8a 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 42, 108, 0.2);
+        }
+
+        .btn-secondary {
+            padding: 12px 32px;
+            background: transparent;
+            color: #1a2a6c;
+            border: 2px solid #1a2a6c;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-secondary:hover {
+            background: #f4f6fc;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 16px 24px;
+            color: #b0b8c8;
+            font-size: 13px;
+            border-top: 1px solid #eef2ff;
+            background: #ffffff;
+        }
+
+        .footer strong { color: #1a2a6c; }
+
+        @media (max-width: 640px) {
+            .header { padding: 12px 16px; }
+            .header .logo { font-size: 20px; }
+            .form-row { grid-template-columns: 1fr; }
+            .container { padding: 0 12px; }
+            .card { padding: 20px; }
+            .form-actions { flex-direction: column; }
+            .form-actions .btn-primary,
+            .form-actions .btn-secondary { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">Smart<span>OB</span></div>
+        <div class="user-info">
+            <span class="avatar">{{ user.username|slice:":2"|upper }}</span>
+            <span>{{ user.get_full_name|default:user.username }}</span>
+            <span class="role-badge">Admin</span>
+            <a href="/logout/">Logout</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h1>📝 Create New OB Record</h1>
+            <p class="subtitle">Fill in the details below to add a new occurrence book entry.</p>
+
+            {% if error %}
+                <div class="error">{{ error }}</div>
+            {% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>OB Number <span class="required">*</span></label>
+                        <input type="text" name="ob_number" placeholder="e.g., OB 45/21/05/2026" value="{{ form_data.ob_number }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Date Reported <span class="required">*</span></label>
+                        <input type="date" name="date_reported" value="{{ form_data.date_reported }}" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Case Type <span class="required">*</span></label>
+                        <select name="case_type" required>
+                            <option value="">Select case type</option>
+                            <option value="theft" {% if form_data.case_type == 'theft' %}selected{% endif %}>Theft</option>
+                            <option value="robbery" {% if form_data.case_type == 'robbery' %}selected{% endif %}>Robbery</option>
+                            <option value="assault" {% if form_data.case_type == 'assault' %}selected{% endif %}>Assault</option>
+                            <option value="burglary" {% if form_data.case_type == 'burglary' %}selected{% endif %}>Burglary</option>
+                            <option value="traffic" {% if form_data.case_type == 'traffic' %}selected{% endif %}>Traffic</option>
+                            <option value="domestic_violence" {% if form_data.case_type == 'domestic_violence' %}selected{% endif %}>Domestic Violence</option>
+                            <option value="fraud" {% if form_data.case_type == 'fraud' %}selected{% endif %}>Fraud</option>
+                            <option value="murder" {% if form_data.case_type == 'murder' %}selected{% endif %}>Murder</option>
+                            <option value="rape" {% if form_data.case_type == 'rape' %}selected{% endif %}>Rape</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Location <span class="required">*</span></label>
+                        <input type="text" name="location" placeholder="e.g., Langata" value="{{ form_data.location }}" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Complainant Name</label>
+                        <input type="text" name="complainant_name" placeholder="Full name of complainant" value="{{ form_data.complainant_name }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Suspect(s)</label>
+                        <input type="text" name="suspect_names" placeholder="Comma-separated names" value="{{ form_data.suspect_names }}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Case Summary <span class="required">*</span></label>
+                    <textarea name="case_summary" placeholder="Detailed description of the incident..." required>{{ form_data.case_summary }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Investigating Officer</label>
+                    <input type="text" name="investigating_officer" placeholder="e.g., IP. John Kamau" value="{{ form_data.investigating_officer }}">
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">💾 Save Record</button>
+                    <a href="/admin-dashboard/" class="btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="footer">
+        SmartOB v1.0 &bull; AI-Assisted Search for Police Occurrence Books &bull; <strong>Strathmore University</strong>
+    </div>
+</body>
+</html>

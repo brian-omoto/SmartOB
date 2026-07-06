@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartOB - Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f4f6fc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #1a1a2e;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0f1a3a 0%, #1a2a6c 50%, #2a3f8a 100%);
+            color: white;
+            padding: 14px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 30px rgba(15, 26, 58, 0.25);
+        }
+
+        .header .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header .logo span { color: #8ab4f8; }
+
+        .header .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 14px;
+        }
+
+        .header .user-info .avatar {
+            background: linear-gradient(135deg, #8ab4f8, #5a8de0);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .header .user-info .role-badge {
+            background: rgba(255,255,255,0.1);
+            padding: 3px 14px;
+            border-radius: 20px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .header .user-info a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .header .user-info a:hover { color: #ffffff; }
+
+        .dashboard {
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: 220px;
+            background: #ffffff;
+            padding: 20px 0;
+            box-shadow: 2px 0 16px rgba(15, 26, 58, 0.04);
+            flex-shrink: 0;
+            min-height: calc(100vh - 70px);
+            border-right: 1px solid #eef2ff;
+        }
+
+        .sidebar .nav-item {
+            display: block;
+            padding: 12px 24px;
+            color: #8a8a9a;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .nav-item:hover {
+            background: #f8faff;
+            color: #1a2a6c;
+        }
+
+        .sidebar .nav-item.active {
+            background: #eef2ff;
+            color: #1a2a6c;
+            border-left-color: #1a2a6c;
+        }
+
+        .sidebar .nav-item .icon { margin-right: 10px; }
+
+        .sidebar .nav-divider {
+            height: 1px;
+            background: #eef2ff;
+            margin: 12px 20px;
+        }
+
+        .content {
+            flex: 1;
+            padding: 28px 32px;
+            overflow-x: auto;
+        }
+
+        .page-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0f1a3a;
+            margin-bottom: 6px;
+        }
+
+        .page-title .sub {
+            font-size: 14px;
+            font-weight: 400;
+            color: #8a8a9a;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin: 24px 0 28px 0;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 20px 24px;
+            box-shadow: 0 2px 12px rgba(15, 26, 58, 0.04);
+            border-left: 4px solid #1a2a6c;
+            border: 1px solid rgba(26, 42, 108, 0.04);
+        }
+
+        .stat-card .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1a2a6c;
+        }
+
+        .stat-card .stat-label {
+            font-size: 13px;
+            color: #8a8a9a;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .stat-card.green { border-left-color: #2e7d32; }
+        .stat-card.green .stat-number { color: #2e7d32; }
+        .stat-card.orange { border-left-color: #e65100; }
+        .stat-card.orange .stat-number { color: #e65100; }
+
+        .action-bar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .action-bar .btn-action {
+            padding: 10px 22px;
+            background: linear-gradient(135deg, #1a2a6c 0%, #2a3f8a 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .action-bar .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 42, 108, 0.2);
+        }
+
+        .action-bar .btn-action.secondary {
+            background: transparent;
+            color: #1a2a6c;
+            border: 2px solid #1a2a6c;
+        }
+
+        .action-bar .btn-action.secondary:hover {
+            background: #f4f6fc;
+        }
+
+        .table-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 20px 0;
+            box-shadow: 0 2px 12px rgba(15, 26, 58, 0.04);
+            overflow: hidden;
+            border: 1px solid rgba(26, 42, 108, 0.04);
+        }
+
+        .table-card .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px 16px;
+            border-bottom: 1px solid #eef2ff;
+        }
+
+        .table-card .table-header h3 {
+            font-size: 16px;
+            color: #0f1a3a;
+            font-weight: 600;
+        }
+
+        .table-card .table-header .btn-print {
+            padding: 6px 18px;
+            background: transparent;
+            color: #1a2a6c;
+            border: 2px solid #1a2a6c;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .table-card .table-header .btn-print:hover {
+            background: #f4f6fc;
+        }
+
+        .table-card table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .table-card thead {
+            background: #f8faff;
+        }
+
+        .table-card th {
+            padding: 12px 18px;
+            text-align: left;
+            font-weight: 600;
+            color: #1a2a6c;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .table-card td {
+            padding: 12px 18px;
+            border-bottom: 1px solid #f0f4ff;
+            color: #1a1a2e;
+        }
+
+        .table-card tbody tr:hover {
+            background: #f8faff;
+        }
+
+        .table-card tbody tr:last-child td { border-bottom: none; }
+
+        .badge-action {
+            display: inline-block;
+            padding: 3px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-action.LOGIN { background: #e3f2fd; color: #0d47a1; }
+        .badge-action.LOGOUT { background: #fce4ec; color: #880e4f; }
+        .badge-action.INSERT { background: #e8f5e9; color: #1b5e20; }
+        .badge-action.UPDATE { background: #fff8e1; color: #e65100; }
+        .badge-action.DELETE { background: #ffebee; color: #b71c1c; }
+        .badge-action.EXPORT { background: #eef2ff; color: #1a2a6c; }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #b0b8c8;
+        }
+
+        .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+
+        .footer {
+            text-align: center;
+            padding: 16px 24px;
+            color: #b0b8c8;
+            font-size: 13px;
+            border-top: 1px solid #eef2ff;
+            background: #ffffff;
+        }
+
+        .footer strong { color: #1a2a6c; }
+
+        @media (max-width: 768px) {
+            .header { padding: 12px 20px; }
+            .header .logo { font-size: 20px; }
+            .dashboard { flex-direction: column; }
+            .sidebar { width: 100%; min-height: auto; display: flex; flex-wrap: wrap; padding: 8px 0; border-right: none; border-bottom: 1px solid #eef2ff; }
+            .sidebar .nav-item { padding: 8px 16px; font-size: 13px; border-left: none; border-bottom: 2px solid transparent; }
+            .sidebar .nav-item.active { border-left: none; border-bottom-color: #1a2a6c; }
+            .sidebar .nav-divider { display: none; }
+            .content { padding: 20px 16px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .table-card { overflow-x: auto; }
+            .action-bar { flex-direction: column; }
+            .action-bar .btn-action { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">Smart<span>OB</span></div>
+        <div class="user-info">
+            <span class="avatar">{{ user.username|slice:":2"|upper }}</span>
+            <span>{{ user.get_full_name|default:user.username }}</span>
+            <span class="role-badge">Admin</span>
+            <a href="/logout/">Logout</a>
+        </div>
+    </header>
+
+    <div class="dashboard">
+        <nav class="sidebar">
+            <a href="/admin-dashboard/" class="nav-item active"><span class="icon">📊</span> Dashboard</a>
+            <a href="#" class="nav-item"><span class="icon">📋</span> Audit Logs</a>
+            <a href="/admin/users/" class="nav-item"><span class="icon">👤</span> Users</a>
+            <div class="nav-divider"></div>
+            <a href="/" class="nav-item"><span class="icon">🔎</span> Search</a>
+        </nav>
+
+        <main class="content">
+            <div class="page-title">
+                📊 Admin Dashboard
+                <span class="sub">Overview of system health and recent activity</span>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">{{ total_records }}</div>
+                    <div class="stat-label">📚 Total OB Records</div>
+                </div>
+                <div class="stat-card green">
+                    <div class="stat-number">{{ active_officers }}</div>
+                    <div class="stat-label">👮 Active Officers</div>
+                </div>
+                <div class="stat-card orange">
+                    <div class="stat-number">{{ total_logs }}</div>
+                    <div class="stat-label">📝 Total Log Entries</div>
+                </div>
+            </div>
+
+            <div class="action-bar">
+                <a href="/admin/create/" class="btn-action">➕ Create OB Record</a>
+                <a href="/admin/users/" class="btn-action">👤 Manage Users</a>
+                <a href="/admin/export/" class="btn-action secondary">📥 Export CSV</a>
+                <a href="/" class="btn-action secondary">🔎 Go to Search</a>
+            </div>
+
+            <div class="table-card">
+                <div class="table-header">
+                    <h3>📋 Recent Audit Trail Logs</h3>
+                    <button class="btn-print" onclick="window.print()">🖨️ Print</button>
+                </div>
+
+                {% if logs %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Date</th>
+                            <th>User</th>
+                            <th>Action</th>
+                            <th>Table</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                        <tr>
+                            <td>{{ log.timestamp|time:"H:i:s" }}</td>
+                            <td>{{ log.timestamp|date:"Y-m-d" }}</td>
+                            <td><strong>User_{{ log.user_id|stringformat:"03d" }}</strong></td>
+                            <td><span class="badge-action {{ log.action_type }}">{{ log.action_type|capfirst }}</span></td>
+                            <td>{{ log.affected_table|default:"—" }}</td>
+                            <td>{{ log.action_details|truncatechars:40|default:"—" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="empty-state">
+                    <div class="icon">📭</div>
+                    <h3>No audit logs found</h3>
+                    <p>Logs will appear here as users interact with the system.</p>
+                </div>
+                {% endif %}
+            </div>
+        </main>
+    </div>
+
+    <div class="footer">
+        SmartOB v1.0 &bull; AI-Assisted Search for Police Occurrence Books &bull; <strong>Strathmore University</strong>
+    </div>
+</body>
+</html>

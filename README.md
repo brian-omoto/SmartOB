@@ -16,11 +16,11 @@ SmartOB adds an intelligent natural language search layer to existing digital OB
 
 ### Key Features
 
-- 🔍 **Natural Language Search** – Type plain English queries like *"theft in Langata"*
-- 🧠 **Semantic Similarity** – Uses pgvector to find meaning, not just keyword matches
-- 📊 **Ranked Results** – Returns top matches with similarity scores
-- 👨‍💼 **Admin Dashboard** – Full CRUD operations, user management, logs, CSV export
-- 📦 **Offline Ready** – Runs completely inside a Docker container
+-  **Natural Language Search** – Type plain English queries like *"theft in Langata"*
+-  **Semantic Similarity** – Uses pgvector to find meaning, not just keyword matches
+-  **Ranked Results** – Returns top matches with similarity scores
+-  **Admin Dashboard** – Full CRUD operations, user management, logs, CSV export
+-  **Offline Ready** – Runs completely inside a Docker container
 
 ## 🛠️ Tech Stack
 

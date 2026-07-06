@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartOB - Intelligent Police Search</title>
+    <!-- Google Fonts (Premium Typography) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f4f6fc;
+            min-height: 100vh;
+            color: #1a1a2e;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: linear-gradient(135deg, #0f1a3a 0%, #1a2a6c 50%, #2a3f8a 100%);
+            color: white;
+            padding: 18px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 30px rgba(15, 26, 58, 0.25);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .header .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header .logo .badge {
+            font-family: 'Inter', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            background: rgba(255,255,255,0.15);
+            padding: 2px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .header .logo span {
+            color: #8ab4f8;
+        }
+
+        .header .nav-links {
+            display: flex;
+            gap: 28px;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .header .nav-links a {
+            color: rgba(255,255,255,0.65);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 6px 0;
+            border-bottom: 2px solid transparent;
+            letter-spacing: 0.3px;
+        }
+
+        .header .nav-links a:hover,
+        .header .nav-links a.active {
+            color: #ffffff;
+            border-bottom-color: #8ab4f8;
+        }
+
+        .header .user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 14px;
+        }
+
+        .header .user-info .avatar {
+            background: linear-gradient(135deg, #8ab4f8, #5a8de0);
+            color: white;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 2px 12px rgba(138, 180, 248, 0.3);
+        }
+
+        .header .user-info .role-badge {
+            background: rgba(255,255,255,0.1);
+            padding: 3px 14px;
+            border-radius: 20px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .header .user-info a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .header .user-info a:hover {
+            color: #ffffff;
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 28px 24px;
+        }
+
+        /* ===== WELCOME BANNER ===== */
+        .welcome-banner {
+            background: linear-gradient(135deg, #eef2ff 0%, #dce3f7 100%);
+            padding: 18px 28px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            border-left: 5px solid #1a2a6c;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .welcome-banner .greeting {
+            font-size: 16px;
+            font-weight: 500;
+            color: #1a2a6c;
+        }
+
+        .welcome-banner .greeting strong {
+            font-weight: 700;
+            color: #0f1a3a;
+        }
+
+        .welcome-banner .stats-mini {
+            display: flex;
+            gap: 20px;
+            font-size: 13px;
+            color: #2a3f8a;
+        }
+
+        .welcome-banner .stats-mini span {
+            background: rgba(255,255,255,0.7);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-weight: 500;
+            backdrop-filter: blur(5px);
+        }
+
+        /* ===== SEARCH CARD ===== */
+        .search-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 28px 32px;
+            box-shadow: 0 4px 24px rgba(15, 26, 58, 0.06);
+            margin-bottom: 24px;
+            border: 1px solid rgba(26, 42, 108, 0.04);
+        }
+
+        .search-card .search-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #0f1a3a;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .search-card .search-hint {
+            font-size: 14px;
+            color: #8a8a9a;
+            margin-bottom: 16px;
+            font-weight: 400;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 12px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 14px 20px;
+            font-size: 15px;
+            border: 2px solid #e8ecf4;
+            border-radius: 14px;
+            font-family: 'Inter', sans-serif;
+            background: #f8faff;
+            transition: all 0.3s ease;
+            font-weight: 400;
+        }
+
+        .search-box input::placeholder {
+            color: #b0b8c8;
+            font-weight: 300;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #1a2a6c;
+            box-shadow: 0 0 0 4px rgba(26, 42, 108, 0.08);
+            background: #ffffff;
+        }
+
+        .search-box .btn-search {
+            padding: 14px 34px;
+            background: linear-gradient(135deg, #1a2a6c 0%, #2a3f8a 100%);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+
+        .search-box .btn-search:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(26, 42, 108, 0.25);
+        }
+
+        .search-box .btn-search:active {
+            transform: translateY(0);
+        }
+
+        .search-info {
+            font-size: 13px;
+            color: #8a8a9a;
+            margin-top: 12px;
+        }
+
+        .search-info strong {
+            color: #1a2a6c;
+            font-weight: 600;
+        }
+
+        /* ===== NLP ENTITIES PANEL ===== */
+        .entities-panel {
+            background: linear-gradient(135deg, #f0f4ff 0%, #e8edf8 100%);
+            padding: 14px 22px;
+            border-radius: 14px;
+            margin: 16px 0 4px 0;
+            border-left: 4px solid #2a3f8a;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .entities-panel .label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #2a3f8a;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .entity-tag {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .entity-tag.case_type {
+            background: #ff9800;
+            color: #ffffff;
+        }
+
+        .entity-tag.location {
+            background: #4caf50;
+            color: #ffffff;
+        }
+
+        .entity-tag.date {
+            background: #2196f3;
+            color: #ffffff;
+        }
+
+        .entity-tag.person {
+            background: #9c27b0;
+            color: #ffffff;
+        }
+
+        /* ===== DASHBOARD GRID ===== */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        .panel {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 22px 26px;
+            box-shadow: 0 4px 24px rgba(15, 26, 58, 0.06);
+            border: 1px solid rgba(26, 42, 108, 0.04);
+        }
+
+        .panel .panel-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f1a3a;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel .panel-title .count-badge {
+            font-size: 12px;
+            font-weight: 500;
+            color: #8a8a9a;
+            background: #f4f6fc;
+            padding: 2px 14px;
+            border-radius: 20px;
+        }
+
+        /* ===== RESULTS TABLE ===== */
+        .results-table {
+            overflow-x: auto;
+        }
+
+        .results-table table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .results-table thead {
+            border-bottom: 2px solid #eef2ff;
+        }
+
+        .results-table th {
+            padding: 12px 14px;
+            text-align: left;
+            font-weight: 600;
+            color: #2a3f8a;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .results-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid #f0f4ff;
+            color: #1a1a2e;
+            vertical-align: middle;
+            font-weight: 400;
+        }
+
+        .results-table tbody tr {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .results-table tbody tr:hover {
+            background: #f8faff;
+            transform: scale(1.01);
+        }
+
+        .results-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .results-table .ob-link {
+            color: #1a2a6c;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 13px;
+        }
+
+        .results-table .ob-link:hover {
+            color: #2a3f8a;
+            text-decoration: underline;
+        }
+
+        .similarity {
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .similarity.high {
+            background: #e8f5e9;
+            color: #1b5e20;
+        }
+
+        .similarity.medium {
+            background: #fff8e1;
+            color: #e65100;
+        }
+
+        .similarity.low {
+            background: #ffebee;
+            color: #b71c1c;
+        }
+
+        /* ===== QUERY LOGS ===== */
+        .query-log-item {
+            padding: 10px 12px;
+            border-bottom: 1px solid #f0f4ff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 8px;
+            margin-bottom: 2px;
+        }
+
+        .query-log-item:hover {
+            background: #f8faff;
+            transform: translateX(4px);
+        }
+
+        .query-log-item .query-text {
+            font-weight: 500;
+            color: #0f1a3a;
+            font-size: 14px;
+        }
+
+        .query-log-item .query-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 4px;
+        }
+
+        .query-log-item .query-time {
+            font-size: 12px;
+            color: #8a8a9a;
+        }
+
+        .query-log-item .query-count {
+            font-size: 11px;
+            color: #2a3f8a;
+            background: #eef2ff;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .query-log-empty {
+            text-align: center;
+            color: #b0b8c8;
+            padding: 24px 0;
+            font-size: 14px;
+        }
+
+        /* ===== NO RESULTS ===== */
+        .no-results {
+            text-align: center;
+            padding: 30px 20px;
+            color: #8a8a9a;
+        }
+
+        .no-results .icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .no-results h3 {
+            color: #0f1a3a;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .no-results p {
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .no-results .example-tags {
+            margin-top: 12px;
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .no-results .example-tags span {
+            background: #f0f4ff;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #1a2a6c;
+            font-weight: 500;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            padding: 20px 24px;
+            color: #b0b8c8;
+            font-size: 13px;
+            border-top: 1px solid #eef2ff;
+            margin-top: 32px;
+            background: #ffffff;
+        }
+
+        .footer strong {
+            color: #1a2a6c;
+            font-weight: 600;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 992px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 14px 20px;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .header .logo {
+                font-size: 22px;
+            }
+
+            .header .nav-links {
+                font-size: 12px;
+                gap: 16px;
+            }
+
+            .header .user-info {
+                font-size: 12px;
+            }
+
+            .search-box {
+                flex-wrap: wrap;
+            }
+
+            .search-box input {
+                min-width: 100%;
+            }
+
+            .search-box .btn-search {
+                width: 100%;
+                justify-content: center;
+                text-align: center;
+            }
+
+            .container {
+                padding: 16px 12px;
+            }
+
+            .search-card {
+                padding: 20px 18px;
+            }
+
+            .panel {
+                padding: 16px 18px;
+            }
+
+            .results-table {
+                overflow-x: auto;
+            }
+
+            .welcome-banner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .welcome-banner .stats-mini {
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header .nav-links {
+                display: none;
+            }
+
+            .entities-panel {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <div class="logo">
+            Smart<span>OB</span>
+            <span class="badge">AI Search</span>
+        </div>
+        <div class="nav-links">
+            <a href="/" class="active">🔍 Search</a>
+            <a href="#">📋 Query Logs</a>
+        </div>
+        <div class="user-info">
+            <span class="avatar">{{ user.username|slice:":2"|upper }}</span>
+            <span>{{ user.get_full_name|default:user.username }}</span>
+            <span class="role-badge">Officer</span>
+            <a href="/logout/">Logout</a>
+        </div>
+    </header>
+
+    <!-- ===== CONTAINER ===== -->
+    <div class="container">
+
+        <!-- WELCOME BANNER -->
+        <div class="welcome-banner">
+            <div class="greeting">
+                👋 Welcome back, <strong>{{ user.get_full_name|default:user.username }}</strong>
+            </div>
+            <div class="stats-mini">
+                <span>📚 {{ total_records|default:"200" }} Records</span>
+                <span>🔍 {{ total_searches|default:"0" }} Today</span>
+                <span>⏱️ {{ last_search_time|default:"Never" }}</span>
+            </div>
+        </div>
+
+        <!-- SEARCH CARD -->
+        <div class="search-card">
+            <label class="search-label">🔍 Enter your search query</label>
+            <div class="search-hint">Type a plain English query — e.g., <em>"All theft cases in Langata for March"</em></div>
+
+            <form method="GET" class="search-box">
+                <input type="text" name="q" placeholder="e.g., theft in Langata last week" value="{{ query }}" autofocus>
+                <button type="submit" class="btn-search">Search →</button>
+            </form>
+
+            <div class="search-info">
+                {% if query %}
+                    Searching for: <strong>"{{ query }}"</strong>
+                    {% if search_time %}<span style="color:#8a8a9a;font-weight:400;">({{ search_time }}ms)</span>{% endif %}
+                {% else %}
+                    Type a natural language query to search OB records.
+                {% endif %}
+            </div>
+
+            <!-- NLP ENTITIES PANEL -->
+            {% if entities %}
+            <div class="entities-panel">
+                <span class="label">🧠 spaCy NLP — Extracted Entities</span>
+                {% if entities.case_type %}
+                    <span class="entity-tag case_type">📋 Case: {{ entities.case_type }}</span>
+                {% endif %}
+                {% if entities.location %}
+                    <span class="entity-tag location">📍 Location: {{ entities.location }}</span>
+                {% endif %}
+                {% if entities.date %}
+                    <span class="entity-tag date">📅 Date: {{ entities.date }}</span>
+                {% endif %}
+                {% for person in entities.persons %}
+                    <span class="entity-tag person">👤 Person: {{ person }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- DASHBOARD GRID -->
+        <div class="dashboard-grid">
+
+            <!-- LEFT: RESULTS -->
+            <div class="panel">
+                <div class="panel-title">
+                    📋 Search Results
+                    {% if results %}<span class="count-badge">{{ results|length }} found</span>{% endif %}
+                </div>
+
+                {% if results %}
+                    <div class="results-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>OB Number</th>
+                                    <th>Date</th>
+                                    <th>Case Type</th>
+                                    <th>Location</th>
+                                    <th>Summary</th>
+                                    <th>Similarity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for record in results %}
+                                <tr onclick="window.location.href='/record/{{ record.0 }}/'">
+                                    <td><a href="/record/{{ record.0 }}/" class="ob-link" onclick="event.stopPropagation();">{{ record.1 }}</a></td>
+                                    <td>{{ record.2 }}</td>
+                                    <td>{{ record.3|capfirst }}</td>
+                                    <td>{{ record.4 }}</td>
+                                    <td>{{ record.7|truncatewords:8 }}</td>
+                                    <td>
+                                        {% with sim=record.8 %}
+                                            {% if sim >= 0.7 %}
+                                                <span class="similarity high">{{ sim|floatformat:2 }}</span>
+                                            {% elif sim >= 0.5 %}
+                                                <span class="similarity medium">{{ sim|floatformat:2 }}</span>
+                                            {% else %}
+                                                <span class="similarity low">{{ sim|floatformat:2 }}</span>
+                                            {% endif %}
+                                        {% endwith %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                {% elif query %}
+                    <div class="no-results">
+                        <div class="icon">🔍</div>
+                        <h3>No results found</h3>
+                        <p>We couldn't find any records matching <strong>"{{ query }}"</strong></p>
+                        <div class="example-tags">
+                            <span>theft</span>
+                            <span>robbery</span>
+                            <span>assault</span>
+                            <span>burglary</span>
+                        </div>
+                    </div>
+
+                {% else %}
+                    <div class="no-results">
+                        <div class="icon">📖</div>
+                        <h3>Ready to search</h3>
+                        <p>Enter a natural language query above to search OB records.</p>
+                        <div class="example-tags">
+                            <span>"theft in Langata"</span>
+                            <span>"robbery in Westlands"</span>
+                            <span>"assault by John Odhiambo"</span>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- RIGHT: QUERY LOGS -->
+            <div>
+                <div class="panel">
+                    <div class="panel-title">
+                        📋 Recent Queries
+                        <span class="count-badge">{{ query_logs|length }}</span>
+                    </div>
+
+                    {% if query_logs %}
+                        {% for log in query_logs %}
+                        <div class="query-log-item" onclick="window.location.href='/?q=' + encodeURIComponent('{{ log.query_text }}')">
+                            <div class="query-text">{{ log.query_text }}</div>
+                            <div class="query-meta">
+                                <span class="query-time">{{ log.timestamp|date:"M d, H:i" }}</span>
+                                <span class="query-count">{{ log.result_count }} results</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="query-log-empty">
+                            No recent searches. Start searching above!
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <div class="footer">
+        SmartOB v1.0 &bull; AI-Assisted Search for Police Occurrence Books &bull; <strong>Strathmore University</strong>
+    </div>
+
+</body>
+</html>

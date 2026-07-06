@@ -32,7 +32,7 @@ CASE_TYPES = [
     'kidnapping', 'cybercrime', 'grievous_bodily_harm', 'corruption', 'embezzlement'
 ]
 
-# Kenyan first names (mixed ethnicities)
+# Kenyan first names 
 KENYAN_FIRST_NAMES = [
     'John', 'James', 'David', 'Peter', 'Michael', 'Stephen', 'Joseph', 'Samuel',
     'Kenneth', 'Francis', 'Paul', 'William', 'George', 'Charles', 'Anthony', 'Mark',
@@ -43,7 +43,7 @@ KENYAN_FIRST_NAMES = [
     'Josephine', 'Monica', 'Brenda', 'Rachel', 'Sarah', 'Rebecca', 'Naomi', 'Deborah'
 ]
 
-# Kenyan last names (mixed ethnicities)
+# Kenyan last names 
 KENYAN_LAST_NAMES = [
     'Odhiambo', 'Ochieng', 'Otieno', 'Omondi', 'Ouma', 'Oduor', 'Onyango', 'Oloo',
     'Owino', 'Okoth', 'Opiyo', 'Omolo', 'Odeke', 'Odera', 'Olouch', 'Owuor',
@@ -64,7 +64,7 @@ ITEMS = [
     'tablet', 'smart watch', 'power bank', 'headphones', 'luggage'
 ]
 
-# Common entry points in Kenyan homes/businesses
+# Common break-in points in Kenyan homes/businesses
 ENTRY_POINTS = [
     'door', 'window', 'back gate', 'unlocked door', 'broken window', 'skylight',
     'garage door', 'balcony', 'roof', 'barred window', 'side door', 'living room window',
