@@ -54,7 +54,7 @@ SmartOB/
 └── README.md # This file
 
 Section 6: Quick Start (Setup)
-markdown
+
 ## 🚀 Quick Start
 
 ### Prerequisites
